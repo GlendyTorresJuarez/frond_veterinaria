@@ -1,0 +1,1017 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.p-0 {
+    padding: 0 !important;
+}
+
+:root {
+    --min-height: 80px;
+    --min-width: 80px;
+    --font-family-principal: 'Poppins', sans-serif;
+    --dark-background: rgba(23, 23, 23);
+    --dark-background-sencundary: rgba(27, 28, 30);
+    --dark-background-secundary-header: #252628
+}
+
+.v-theme--light {
+    --v-theme-primary: 185, 119, 14 !important;
+    --v-global-theme-primary: 236, 112, 99 !important
+}
+
+
+.v-theme--dark {
+    --v-theme-background: 23, 23, 23 !important;
+    --v-theme-surface: 39, 40, 42 !important;
+    --v-theme-primary: 220, 118, 51 !important;
+    --v-global-theme-primary: 236, 112, 99 !important;
+    --v-overlay-scrim-background: 23, 23, 23 !important;
+}
+
+.dp__input {
+    color: inherit !important;
+}
+
+*,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-h5 {
+    font-family: var(--font-family-principal);
+}
+
+.app-title {
+    font-size: 1rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: .1rem;
+}
+
+
+/*toast*/
+.v-theme--dark .toast-alt {
+    background: #252628 !important;
+}
+
+.toast-alt {
+    position: fixed;
+    top: 25px;
+    right: 30px;
+    max-width: 500px;
+    min-width: 426px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px 35px 20px 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /*display: none;*/
+    transform: translateX(calc(100% + 30px));
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    z-index: 8000;
+    cursor: pointer;
+}
+
+.toast-alt.active {
+    transform: translateX(0%);
+}
+
+.heder-toast {
+    display: flex;
+    align-items: center;
+}
+
+.toast-content .check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 35px;
+    font-size: 13px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.menssage-toast {
+    margin: 0 50px !important;
+}
+
+.menssage-toast .text-1 {
+    line-height: 26px;
+    font-weight: 600 !important;
+    font-size: 1.07rem;
+}
+
+.menssage-toast .text-2 {
+    color: #6e6b7b !important;
+    font-size: .857rem;
+    font-weight: 400;
+}
+
+.toast-alt .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+    font-size: 28px;
+}
+
+.toast-alt .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: #ddd;
+}
+
+.toast-alt .progress:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.progress.active:before {
+    animation: progress 5s linear forwards;
+}
+
+/*final de toast*/
+
+/*butones tool*/
+.container-btn {
+    margin: 0 1.5rem;
+    position: absolute;
+    top: 2rem;
+    z-index: 100;
+}
+
+.container-btn,
+.content-btn {
+    display: flex;
+    align-items: center;
+}
+
+.content-btn {
+    position: relative;
+    /* padding: .5rem; */
+    margin: 0 0.5rem;
+    border-radius: 1rem;
+    box-shadow: -2px -2px 8px #FAFAFF 2px 2px 8px rgba(13, 12, 64, .2);
+    cursor: pointer;
+}
+
+.btn-action {
+    padding: .5rem;
+}
+
+.content-btn.primary {
+    background-color: #eeecfc !important;
+}
+
+.content-btn.success {
+    background-color: #ecf8ee !important;
+}
+
+.content-btn.error {
+    background-color: rgba(234, 84, 85, .12) !important;
+}
+
+.content-btn.secondary {
+    background-color: rgba(130, 134, 139, .12) !important;
+}
+
+.v-theme--dark .content-btn.primary {
+    background-color: #404160 !important;
+}
+
+.v-theme--dark .content-btn.success {
+    background-color: #36454c !important;
+}
+
+.tooltip-btn {
+    opacity: 0;
+    position: absolute;
+    padding: .5rem 1rem;
+    white-space: nowrap;
+    font-weight: 700;
+    border-radius: .5rem;
+    pointer-events: none;
+}
+
+.tooltip-btn::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.tooltip-btn.primary {
+    background-color: #b9770e !important;
+    color: #eeecfc;
+}
+
+.tooltip-btn.error {
+    background-color: rgba(234, 84, 85, .12) !important;
+    color: #ea5455;
+}
+
+.tooltip-btn.secondary {
+    background-color: rgba(130, 134, 139, .12) !important;
+    color: #82868b;
+}
+
+.tooltip-btn.success {
+    background-color: #28c76f !important;
+    color: #ecf8ee;
+}
+
+.tooltip-btn,
+.content-btn {
+    transition: .3s;
+}
+
+.tooltip-btn-top {
+    top: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.tooltip-btn.primary::after {
+    background-color: #b9770e;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(45deg);
+    bottom: 1px;
+}
+
+.tooltip-btn.success::after {
+    background-color: #28c76f;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(45deg);
+    bottom: 1px;
+}
+
+.container-tool {
+    position: relative;
+}
+
+.content-btn:hover .tooltip-btn-top {
+    opacity: 1;
+    top: -3.40rem;
+}
+
+.button-compone {
+    position: relative;
+}
+
+/*final de tool*/
+
+/*agregando estilos a la tabla*/
+
+.header-table-menu {
+    cursor: pointer;
+    display: inline-block;
+    min-width: none;
+    width: max-content;
+}
+
+.v-table tfoot th,
+.v-table thead th {
+    background-color: #f3f2f7 !important;
+    text-transform: uppercase;
+    font-size: .857rem;
+    letter-spacing: .5px;
+}
+
+.v-table tbody tr td {
+    text-transform: uppercase !important;
+    font-size: .75rem;
+    color: #6e6b7b;
+}
+
+.v-table tbody tr td a {
+    color: #6e6b7b !important;
+    ;
+}
+
+.v-theme--dark .v-table tfoot th,
+.v-theme--dark .v-table thead th {
+    background-color: var(--dark-background-sencundary) !important;
+}
+
+.v-theme--dark .v-table tbody tr td a,
+.v-theme--dark .v-table tbody tr td {
+    color: #cdc9da !important;
+}
+
+/*sinal de la tabla*/
+
+/*login*/
+.login {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    inline-size: 100%;
+    min-block-size: 100vh;
+}
+
+.bt-login,
+.bt-load {
+    border-radius: 2rem;
+    margin: auto;
+}
+
+.login::before {
+    position: absolute;
+    z-index: 777;
+    background-color: rgba(3, 96, 251, 30%);
+    block-size: 100%;
+    content: "";
+    inline-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+}
+
+.login video {
+    position: absolute;
+    z-index: 000;
+    block-size: 100%;
+    inline-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    object-fit: cover;
+}
+
+.bg-glass {
+    backdrop-filter: saturate(200%) blur(25px);
+    background-color: #ffffffe6 !important;
+}
+
+.v-theme--dark .bg-glass {
+    backdrop-filter: saturate(200%) blur(25px);
+    background-color: #262628c2 !important;
+}
+
+/**/
+
+.container {
+    width: 100%;
+}
+
+.v-theme--dark .sidebar {
+    background-color: #27282a;
+}
+
+.sidebar {
+    position: relative;
+    width: 350px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 24px;
+    /* border-radius: 30px; */
+    transition: all 0.3s;
+    box-shadow: 2px 0px 0 0 rgba(var(--v-shadow-key-umbra-color), .14), 0 0 transparent, 0 0 transparent;
+}
+
+.menu-btn {
+    position: absolute;
+    right: -14px;
+    top: 3%;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    cursor: pointer;
+    border: 2px solid #f6f6f6;
+    z-index: 1;
+}
+
+.sidebar.active {
+    width: 92px;
+}
+
+/*configuracion del calendario*/
+.calendario .dp__menu {
+    border: 0 !important;
+}
+
+.calendario .dp--tp-wrap {
+    display: none;
+}
+
+.text-dia {
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #666;
+    font-size: 12px;
+}
+
+.date-text {
+    font-size: 24px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.active-do {
+    color: #e9a4c3;
+}
+
+.active-fecha {
+    background-color: #f4e9d8;
+}
+
+.v-theme--dark .active-fecha {
+    background-color: #44352b;
+}
+
+/* #menu-calender {
+    display: none;
+} */
+
+.title-menu-calendar {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.btn-close-menu .close {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    padding-bottom: .4rem;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+
+.control-dia-calendar {
+    display: inline-block;
+    background-color: #dedede;
+    min-width: 86px;
+    max-width: 86px;
+    text-align: center;
+    line-height: 1;
+}
+
+.v-theme--dark .control-dia-calendar {
+    background-color: var(--dark-background-sencundary);
+}
+
+.control-dia-calendar .conteiner-mes {
+    padding: 4px;
+    background-color: #8bd089;
+    font-size: 13px;
+}
+
+.v-theme--dark .control-dia-calendar .conteiner-mes {
+    background-color: #274235
+}
+
+.font-12 {
+    font-size: .758rem;
+}
+
+.container-dia {
+    padding: 4px;
+}
+
+.control-dia-calendar .container-dia .fecha-dia {
+    font-size: 30px;
+}
+
+.control-dia-calendar .container-dia .fecha-nombre {
+    font-size: 12px;
+}
+
+.control-dia-calendar .conteiner-hora {
+    padding: 4px;
+    border-top: 1px solid #bfbfbf;
+    font-size: 16px;
+}
+
+.container-inf-client .content-info {
+    width: 78%;
+    font-size: 12px;
+    line-height: 1.4rem;
+
+}
+
+/* =======configuracion de colores de evento del calender=========*/
+.bg-light-confirmac {
+    background-color: #ec716394;
+}
+
+#menu-calender span {
+    font-size: 12px !important;
+}
+
+.text-confirmac {
+    font-size: 12px;
+    color: #953e35 !important;
+}
+
+.v-theme--dark .text-confirmac {
+    color: #ffb0a7 !important;
+}
+
+/**/
+.v-theme--light .vuejs3-datepicker__calendar {
+    box-shadow: none;
+}
+
+.v-theme--dark .vuejs3-datepicker__calendar {
+    background-color: #27282a;
+    color: #82868b;
+    box-shadow: none;
+}
+
+.calendario .vuejs3-datepicker__calendar-topbar {
+    display: none;
+}
+
+.vuejs3-datepicker__calendar .cell.selected {
+    border-radius: 50%;
+}
+
+.card-calendar {
+    display: flex;
+    min-height: 45px;
+    padding: 9px 16px 9px 15px;
+}
+
+.card-boder-vertica {
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    display: inline-block;
+    min-width: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 6px;
+
+
+    background-image: linear-gradient(-45deg, transparent 19%, transparent 19%, transparent 50%, transparent 50%, transparent 69%, transparent 69%, transparent);
+    background-size: 6px 6px;
+    border-image-source: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.container-card-calendar {
+    -webkit-box-align: baseline;
+    -ms-flex-align: baseline;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-box-flex: 1;
+
+    align-items: baseline;
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    height: fit-content;
+    overflow: hidden;
+    padding: 5px 10px;
+}
+
+.card-calendar-hora {
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-bottom: 4px;
+    width: 100%;
+}
+
+.calendar-hora {
+    margin: 0 10px 0 0;
+    min-width: 52px;
+    width: 52px;
+}
+
+.text-hora-calendar {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.texto-general-calender {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.texto-general-calender .text-base {
+    font-size: 12px;
+    font-weight: 400;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.boder-confirmac {
+    border-color: #ec716394
+}
+
+.boder-secundary {
+    border-color: #aaabb0
+}
+
+.boder-info {
+    border-color: #00cfe8;
+}
+
+.v-theme--dark .dp__theme_light {
+    --dp-background-color: #27282a !important;
+    --dp-border-color: #53545d !important;
+    --dp-text-color: #9a9db1 !important;
+}
+
+.v-theme--dark .dp__menu {}
+
+.user-text {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: end;
+    margin-right: 0.8rem;
+    line-height: 1.1rem;
+}
+
+.user-status {
+    font-size: 12px !important;
+}
+
+.user-menu {
+    display: none !important;
+}
+
+.header-detalle-cita {
+    position: fixed;
+    top: 5rem;
+    inline-size: 100%;
+    margin-inline: auto;
+    max-inline-size: 1390px;
+    z-index: 8;
+
+}
+
+.breadcrumbs-detalle {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    backdrop-filter: blur(6px);
+    background-color: rgb(255, 255, 255, 0.9);
+    /* border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(47, 43, 61, 0.14), 0 0 transparent, 0 0 transparent; */
+    font-size: 12px;
+}
+
+.v-theme--dark .breadcrumbs-detalle {
+    background-color: var(--dark-background-secundary-header)
+}
+
+.header-main-detalle {
+    background-color: #f8f7fa;
+}
+
+.v-theme--dark .header-main-detalle {
+    background-color: #171717
+}
+
+.main-detalle-cita {
+    width: 100%;
+    margin-top: 8rem;
+}
+
+.header-text {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 2;
+}
+
+.loadings-detalle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    transition: all .15s ease 0s;
+}
+
+.loadings-detalle .icon-pulse {
+    animation: pulse-keyframes 2s ease infinite;
+    animation-fill-mode: both;
+}
+
+@keyframes pulse-keyframes {
+    0% {
+        opacity: 1;
+        transform: scale3d(.8, .8, .8);
+    }
+
+    50% {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale3d(.8, .8, .8);
+    }
+}
+
+.btn-header-detalle {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.title-detalle {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+}
+
+.container-form-detalle {
+    position: relative;
+    background-image: linear-gradient(#efc79c 1px, transparent 1px), linear-gradient(#efc79c 1px, transparent 1px);
+    background-size: 1px 1px, 1px 1px;
+    background-repeat: repeat-y, repeat-y;
+    background-position: 22px 0, 24px 0;
+
+    padding-left: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.button-border-items-detalle {
+    position: relative;
+    padding-top: 1rem;
+}
+
+.button-border-items-detalle::before {
+    position: absolute;
+    display: block;
+    content: ' ';
+    top: 3px;
+    width: 100%;
+    left: -3rem;
+    height: 1px;
+    background-color: #d4dde6;
+}
+
+.container-form-detalle::before {
+    position: absolute;
+    display: block;
+    content: ' ';
+    top: -5px;
+    width: 100%;
+    left: 0;
+    height: 1px;
+    background-color: #d4dde6;
+}
+
+.title-detalle-form {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+}
+
+.detalle-container-logo-receta {
+    display: block;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: -1rem;
+    z-index: -1;
+}
+
+.logo-receta-detalle {
+    width: 200px;
+    fill: #eeeef2;
+    stroke: none
+}
+
+.v-theme--dark .logo-receta-detalle {
+    fill: #565861;
+}
+
+/* .detalle-receta {
+    text-align: center;
+} */
+
+.items-receta .title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.items-receta {
+    font-size: 11px;
+}
+
+.container-documentos {
+    color: #5d5a68;
+}
+
+.v-theme--dark .container-documentos {
+    color: #abaec5;
+}
+
+.container-documentos::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #9eb0c3;
+    border-radius: 4px 0 0 4px;
+}
+
+.container-documentos:hover {
+    background-color: #eef0ef;
+}
+
+.v-theme--dark .container-documentos:hover {
+    background-color: var(--dark-background-sencundary);
+}
+
+.app-customizer {
+    .customizer-section {
+        display: flex;
+        flex-direction: column;
+        padding: 1.25rem;
+        gap: 1.5rem;
+    }
+
+    .customizer-heading {
+        padding-block: 1.125rem;
+        padding-inline: 1.25rem;
+    }
+
+    .v-navigation-drawer__content {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.app-customizer-toggler {
+    position: fixed !important;
+    inset-block-start: 50%;
+    inset-inline-end: 0;
+}
+
+.background-secundary {
+    background: #e8e8e8 !important;
+}
+
+.v-theme--dark .background-secundary {
+    background: #373737 !important;
+}
+
+.v-theme--dark .header-documento {
+    background-color: var(--dark-background) !important;
+}
+
+.header-documento {
+    background-color: #fff !important;
+}
+
+.container-documento {
+    width: 619px !important;
+    margin: auto;
+    display: block;
+}
+
+.menu-documento {
+    width: 79%;
+    position: fixed;
+    bottom: 3rem;
+}
+
+.container-zoom {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-zoom button {
+    border-radius: 50%;
+}
+
+#prev,
+#next {
+    box-shadow: none;
+}
+
+.v-theme--dark .pdfGeneral {
+    filter: invert(1);
+}
+
+.container-pregunta-frecuente {
+    position: fixed;
+    bottom: 2.8rem;
+    right: 5rem;
+}
+
+.btn-pregunta-frecuente {
+    border-radius: 50%;
+}
+
+.search-header {
+    position: relative;
+    padding: 4rem !important;
+    background-size: cover !important;
+}
+
+.search-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    opacity: .8;
+    z-index: -1;
+}
+
+.v-theme--dark .search-header::before {
+    background-color: #27282a;
+    opacity: .9;
+}
+
+.v-theme--dark .bar-chart {
+    background-color: #27282a;
+}
+
+.bar-chart .title {
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.bar-chart .sub-title {
+    font-size: 10px;
+}
+
+@media (max-width: 599px) {
+    .user-menu {
+        display: flex !important;
+    }
+
+    .detalle-container-logo-receta {
+        position: relative;
+    }
+}
+
+@media (max-width: 1000px) {
+    .header-detalle-cita {
+        max-inline-size: 948px !important;
+    }
+}
+
+@media (max-width: 988px) {
+    .header-detalle-cita {
+        max-inline-size: 893px !important;
+    }
+}
+
+.custom-loader {
+    display: flex;
+    animation: loader 1s infinite;
+}
+
+@keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
