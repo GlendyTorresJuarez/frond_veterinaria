@@ -33,6 +33,8 @@ const colorConf = ref("");
 const confEvent = ref("");
 const dataLog = ref([]);
 
+const usuario = ref(JSON.parse(localStorage.getItem('userData')))
+
 //*variables del toast*///
 const valueToas = ref({})
 const timer = ref(null)
@@ -119,7 +121,7 @@ const eventoCrud = async () => {
         tipo: tipo.value,
         descripcion: descripcion.value,
         key_estado: 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     var isVerificar = tipo.value == ''
@@ -165,13 +167,13 @@ const eventoDialogo = (id, event) => {
 
     if (event == 1) {
         iconConf.value = 'tabler-discount-off'
-        menssageConf.value = 'Estas seguro de anular al personal?'
+        menssageConf.value = 'Estas seguro de anular el tipo de mascota?'
         colorConf.value = 'warning'
         confEvent.value = 1
     }
     if (event == 2) {
         iconConf.value = 'tabler-checks'
-        menssageConf.value = 'Desea activar al personal?'
+        menssageConf.value = 'Desea restaurar los datos?'
         colorConf.value = 'success'
         confEvent.value = 2
     }
@@ -188,7 +190,7 @@ const eventoConfirmacion = async () => {
     loadings.value[2] = true
     var data = {
         key_estado: confEvent.value == 1 ? 2 : 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     await axios({
@@ -306,8 +308,9 @@ function eventMouseover() {
             </template>
         </v-breadcrumbs>
 
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
 
         <VRow class="mt-5">
             <VCol cols="12">
@@ -371,7 +374,8 @@ function eventMouseover() {
                                     <VIcon color="success " size="19" icon="tabler-checks" />
                                 </VBtn>
 
-                                <VBtn icon size="x-small" color="default" variant="text" @click="eventoDialogo(item.id, 3)">
+                                <VBtn icon size="x-small" color="default" variant="text"
+                                    @click="eventoDialogo(item.id, 3)">
                                     <VIcon color="error" size="19" icon="tabler-trash" />
                                 </VBtn>
 
@@ -406,7 +410,8 @@ function eventMouseover() {
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextarea prepend-inner-icon="tabler-message" v-model="descripcion" label="Descripción" />
+                                <VTextarea prepend-inner-icon="tabler-message" v-model="descripcion"
+                                    label="Descripción" />
                             </VCol>
                         </VRow>
                     </VCardText>
@@ -481,10 +486,10 @@ function eventMouseover() {
                             <div class="text-center">
                                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                                     {{
-                                        moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
-    }}
+            moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                                    }}
                                     <br> {{
-                                        moment(item.date).format('h:mm:ss a') }}</span>
+            moment(item.date).format('h:mm:ss a') }}</span>
                             </div>
                         </template>
                         <template #usuario="{ item }">

@@ -13,7 +13,7 @@ import Datepicker from 'vuejs3-datepicker';
 
 import '@vuepic/vue-datepicker/dist/main.css';
 import moment from 'moment';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 import CryptoJS from 'crypto-js';
 
@@ -97,12 +97,36 @@ const dataTipoMascota = ref([])
 const dataRaza = ref([])
 
 
-const dataDuracion = ref([5, 10, 15, 20, 30, 40, 45, 50, 60])
+const dataDuracion = ref(['5', '10', '15', '20', '30', '40', '45', '50', '60'])
 
 //*variables del toast*///
 const valueToas = ref({})
 const timer = ref(null)
 
+//variables del cronometro
+const h = ref(0)
+const m = ref(0)
+const s = ref(0)
+const tiempoEstimado = ref(0)
+const key = ref()
+
+const cronometro = () => {
+    key.value = setInterval(calculoCronometro, 1000)
+}
+
+const calculoCronometro = () => {
+    s.value++
+
+    if (s.value > 59) { m.value++; s.value = 0 }
+    if (m.value > 59) { h.value++; m.value = 0 }
+    if (h.value > 24) { h.value = 0 }
+
+    let sAux = `${s.value < 10 ? `0${s.value}` : s.value}`
+    let mAux = `${m.value < 10 ? `0${m.value}` : m.value}`
+    let hAux = `${h.value < 10 ? `0${h.value}` : h.value}`
+
+    tiempoEstimado.value = `${hAux}:${mAux}:${sAux}`
+}
 
 const buscarPersona = async () => {
     loadings.value[1] = true
@@ -172,9 +196,14 @@ const listaServicios = async () => {
     dataServicios.value = [];
 
     dataServicios.value = await axios.get('backend-citas/lista-servicios/').then(res => res.data.data).catch(err => err)
-
 };
 
+const obtenerDuracionServicio = () => {
+    if (servicio.value.length != 0) {
+        var data = dataServicios.value.find(x => x.id == servicio.value)
+        duracion.value = data.duracion
+    }
+}
 const listaCitas = async () => {
     loadings.value[0] = true
     dataCitas.value = []
@@ -347,6 +376,13 @@ const limpiarMascota = () => {
 }
 
 const eventoNuevo = () => {
+    clearInterval(key.value)
+    h.value = 0
+    m.value = 0
+    s.value = 0
+    tiempoEstimado.value = `00:00:00`
+
+    cronometro()
     isMenuCalender.value = false
     modal.value[0] = true
     titleCrud.value = "Agregar cita"
@@ -391,7 +427,6 @@ const limpiar = () => {
 const eventoCrud = async () => {
     loadings.value[1] = true
 
-
     if (isValidarCampos() && idCita.value == 0) {
         loadings.value[1] = false
         return false
@@ -414,6 +449,7 @@ const eventoCrud = async () => {
         motivo_consulta: motivoConsulta.value,
         key_estado: 9,
         key_usuario: null,
+        tiempo_estimado: tiempoEstimado.value
     }
 
     if (isValidFecha.is_error && idCita.value == 0) {
@@ -850,7 +886,7 @@ onMounted(() => {
     listaRaza()
 })
 
-watch(() => {
+watchEffect(() => {
     if (usuario.value.key_rol == 3) {
         var datos = dataClientes.value.find(cli => cli.dni == usuario.value.documento)
         if (datos != undefined) {
@@ -859,8 +895,12 @@ watch(() => {
     }
 })
 
-watch(() => {
+watchEffect(() => {
     itemsMascota.value = dataMascota.value.filter(x => x.key_cliente == cliente.value)
+})
+
+watchEffect(() => {
+    obtenerDuracionServicio()
 })
 
 /*======eventos Toast=============*/
@@ -909,7 +949,7 @@ function eventMouseover() {
                         <VDivider />
 
                         <div class="calendario d-flex align-center justify-center">
-                            <datepicker v-model="fechaActual" inline="true" language="es"></datepicker>
+                            <datepicker v-model="fechaActual" :inline="true" language="es"></datepicker>
 
                         </div>
 
@@ -939,6 +979,13 @@ function eventMouseover() {
 
             <!-- Dialog Content -->
             <VCard :title="titleCrud">
+                <template #append>
+                    <div class="cronometro mr-8">
+                        <div id="d-flex align-center">
+                            <VIcon icon="tabler-clock-24" class="icon-pulse"></VIcon> {{ tiempoEstimado }}
+                        </div>
+                    </div>
+                </template>
                 <VForm @submit.prevent="eventoCrud()">
                     <VCardText>
                         <VRow>
@@ -1001,6 +1048,14 @@ function eventMouseover() {
                                     item-value="id" />
                             </VCol>
 
+                            <VCol v-if="servicio.length != 0" cols="12" sm="12" md="12">
+                                <h5>
+                                    Informacion del servicio
+                                </h5>
+                                <p class="p-0 m-0" style="font-size: 12px;">{{ dataServicios.filter(r => r.id ==
+            servicio)[0]?.descripcion || "No hay información" }}</p>
+                            </VCol>
+
                             <VCol cols="12" sm="6" md="6">
                                 <AppDateTimePicker v-model="fechaCita"
                                     :config="{ enableTime: false, dateFormat: 'd-m-Y' }" placeholder="Fecha" />
@@ -1012,10 +1067,10 @@ function eventMouseover() {
 
                             <VCol cols="12" sm="12" md="12">
                                 <label>Duración</label>
-                                <VRadioGroup v-model="duracion" false-icon="tabler-alarm-off" true-icon="tabler-alarm"
-                                    inline>
-                                    <VRadio v-for="n in dataDuracion" :key="n" :label="`${n}`" :value="n"
-                                        density="compact" />
+                                <VRadioGroup v-model="duracion" fal false-icon="tabler-alarm-off"
+                                    true-icon="tabler-alarm" inline>
+                                    <VRadio v-for="n in dataDuracion" :key="n" :label="n" :value="n" density="compact"
+                                        :disabled="duracion != 0 && duracion != n ? true : false" />
                                 </VRadioGroup>
                             </VCol>
 
@@ -1056,10 +1111,11 @@ function eventMouseover() {
                     <VCardText>
                         <VRow>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField v-model="dni" label="Documento de identidad"
-                                    :rules="[(v) => !!v || 'Campo requerido']" type="text"
-                                    append-inner-icon="tabler-search" @click:append-inner="buscarPersona()"
-                                    :loading="loadings[1]" :disabled="loadings[1]" />
+                                <VTextField type="number" v-model="dni" label="Documento de identidad"
+                                    :rules="[(v) => !!v || 'Campo requerido']" append-inner-icon="tabler-search"
+                                    @click:append-inner="buscarPersona()" :loading="loadings[1]" :disabled="loadings[1]"
+                                    maxlength="8"
+                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-signature" v-model="nombre" label="Nombres"
@@ -1078,8 +1134,9 @@ function eventMouseover() {
                                     label="Sexo" :items="itemsSexo" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-device-mobile" v-model="numCel"
-                                    label="Nro. Celular" :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VTextField type="number" prepend-inner-icon="tabler-device-mobile" v-model="numCel"
+                                    label="Nro. Celular" :rules="[(v) => !!v || 'Campo requerido']" maxlength="9"
+                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-brand-mailgun" v-model="correo" label="Correo" />
@@ -1251,7 +1308,7 @@ function eventMouseover() {
                             <VBtn v-if="[9, 5].includes(items.key_estado)" class="w-100 font-12 mb-3" variant="outlined"
                                 color="success"
                                 :to="{ name: 'citas-detalle', params: { detalle: encriptar(items.id) } }">
-                                <VIcon icon="tabler-stethoscope"></VIcon> <span class="ms-2">Iniciar cita</span>
+                                <VIcon icon="tabler-stethoscope"></VIcon> <span class="ms-2">Confirmar cita</span>
                             </VBtn>
 
                             <VBtn v-if="[9, 8, 5].includes(items.key_estado)"

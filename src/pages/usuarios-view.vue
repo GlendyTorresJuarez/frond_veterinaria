@@ -184,12 +184,15 @@ const eventoCrud = async () => {
         password.value == '' ||
         correo.value == '' ||
         tipo.value.length == 0 ||
-        password.value.length <= 7 ||
-        confirmarPassword.value.length <= 7 ||
-        password.value != confirmarPassword.value
+        password.value.length <= 7
 
 
     if (isVerificar && idUsuario.value == 0) {
+        loadings.value[1] = false
+        return false
+    }
+
+    if (password.value.length <= 7) {
         loadings.value[1] = false
         return false
     }
@@ -363,10 +366,6 @@ const buscarPersonal = async () => {
     loadings.value[5] = false
 }
 
-const confirmedValidator = (confirmarPassword, password) => {
-    return password == confirmarPassword || 'El campo Confirmar contraseña no coincide'
-}
-
 onMounted(() => {
     listaUsuarios();
     listaTipoUsuario()
@@ -395,8 +394,9 @@ function eventMouseover() {
             </template>
         </v-breadcrumbs>
 
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
 
         <VRow class="mt-5">
             <VCol cols="12">
@@ -460,7 +460,8 @@ function eventMouseover() {
                                     <VIcon color="success " size="19" icon="tabler-checks" />
                                 </VBtn>
 
-                                <VBtn icon size="x-small" color="default" variant="text" @click="eventoDialogo(item.id, 3)">
+                                <VBtn icon size="x-small" color="default" variant="text"
+                                    @click="eventoDialogo(item.id, 3)">
                                     <VIcon color="error" size="19" icon="tabler-trash" />
                                 </VBtn>
 
@@ -484,7 +485,8 @@ function eventMouseover() {
 
                         <template #fecha_registro="{ item }">
                             <div class="d-flex align-center justify-center flex-column">
-                                <div class="text-center"><span>{{ moment(item.fecha_registro).format(`DD [de] MMM YYYY`) }}
+                                <div class="text-center"><span>{{ moment(item.fecha_registro).format(`DD [de] MMM YYYY`)
+                                        }}
                                     </span></div>
                                 <div>
                                     {{ moment(item.fecha_registro).format('h:mm:ss a') }}
@@ -495,7 +497,8 @@ function eventMouseover() {
 
                         <template #ultimo_acceso="{ item }">
                             <div class="d-flex align-center justify-center flex-column">
-                                <div class="text-center"><span>{{ moment(item.ultimo_acceso, 'DD/MM/YYYY').format(`DD [de]
+                                <div class="text-center"><span>{{ moment(item.ultimo_acceso, 'DD/MM/YYYY').format(`DD
+                                        [de]
                                         MMM YYYY`) }}
                                     </span></div>
                                 <div>
@@ -527,16 +530,18 @@ function eventMouseover() {
                         <VRow>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField v-model="numDocumento" label="Documento de identidad"
-                                    :rules="[(v) => !!v || 'Campo requerido']" type="text" append-inner-icon="tabler-search"
-                                    @click:append-inner="buscarPersonal()" :loading="loadings[5]" :disabled="loadings[5]" />
+                                    :rules="[(v) => !!v || 'Campo requerido']" type="number"
+                                    append-inner-icon="tabler-search" @click:append-inner="buscarPersonal()"
+                                    :loading="loadings[5]" :disabled="loadings[5]" maxlength="8"
+                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-signature" v-model="nombre" label="Nombres"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido" label="Apellidos"
-                                    :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido"
+                                    label="Apellidos" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
@@ -548,25 +553,17 @@ function eventMouseover() {
                                 <VTextField prepend-inner-icon="tabler-user-plus" v-model="usuario" label="Usuario"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
-                            <VCol cols="12" sm="6" md="6">
+                            <VCol cols="12">
                                 <VTextField v-model="password" spellcheck="false" autocomplete="off"
                                     :append-inner-icon="showPassword ? 'tabler-eye-off' : 'tabler-eye'"
                                     :rules="[rules.required, rules.min]" :type="showPassword ? 'text' : 'password'"
                                     name="input-10-1" label="Contraseña" hint="At least 8 characters" counter
                                     @click:append-inner="showPassword = !showPassword" />
                             </VCol>
-                            <VCol cols="12" sm="6" md="6">
-                                <VTextField v-model="confirmarPassword" spellcheck="false" autocomplete="off"
-                                    :append-inner-icon="showConfPassword ? 'tabler-eye-off' : 'tabler-eye'"
-                                    :rules="[rules.required, rules.min, confirmedValidator(confirmarPassword, password)]"
-                                    :type="showConfPassword ? 'text' : 'password'" name="input-10-1"
-                                    label="Confirmar Contraseña" hint="At least 8 characters" counter
-                                    @click:append-inner="showConfPassword = !showConfPassword" />
-                            </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VAutocomplete prepend-inner-icon="tabler-users-group" variant="outlined" v-model="tipo"
-                                    label="Tipo usuario" :items="dataTipoUsuario" item-title="tipo_usuario" item-value="id"
-                                    :rules="[(v) => !!v || 'Campo requerido']" />
+                                    label="Tipo usuario" :items="dataTipoUsuario" item-title="tipo_usuario"
+                                    item-value="id" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                         </VRow>
                     </VCardText>
@@ -641,10 +638,10 @@ function eventMouseover() {
                             <div class="text-center">
                                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                                     {{
-                                        moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
-    }}
+            moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                                    }}
                                     <br> {{
-                                        moment(item.date).format('h:mm:ss a') }}</span>
+            moment(item.date).format('h:mm:ss a') }}</span>
                             </div>
                         </template>
                         <template #usuario="{ item }">

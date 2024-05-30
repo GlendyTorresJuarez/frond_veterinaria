@@ -858,8 +858,9 @@ function eventMouseover() {
 </script>
 <template>
     <div>
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
         <div class="container d-flex">
             <div class="sidebar">
                 <div class="menu-btn">
@@ -924,8 +925,9 @@ function eventMouseover() {
                                 <div class="d-flex align-center align-center justify-center">
                                     <div class="w-100">
                                         <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined"
-                                            v-model="cliente" label="Cliente" :items="dataClientes" item-title="dni_nombre"
-                                            item-value="id" :rules="[(v) => !!v || 'Campo requerido']" />
+                                            v-model="cliente" label="Cliente" :items="dataClientes"
+                                            item-title="dni_nombre" item-value="id"
+                                            :rules="[(v) => !!v || 'Campo requerido']" />
                                     </div>
                                     <div class="ms-2">
                                         <VBtn color="#117864" variant="tonal" @click="eventoNuevoCliente()">
@@ -944,9 +946,10 @@ function eventMouseover() {
                             <VCol cols="12" sm="12" md="12">
                                 <div class="d-flex align-center align-center justify-center">
                                     <div class="w-100">
-                                        <VAutocomplete prepend-inner-icon="tabler-dog" variant="outlined" v-model="mascota"
-                                            label="Mascota" :items="itemsMascota" item-title="nombre_mascota"
-                                            item-value="id" :rules="[(v) => !!v || 'Campo requerido']" />
+                                        <VAutocomplete prepend-inner-icon="tabler-dog" variant="outlined"
+                                            v-model="mascota" label="Mascota" :items="itemsMascota"
+                                            item-title="nombre_mascota" item-value="id"
+                                            :rules="[(v) => !!v || 'Campo requerido']" />
                                     </div>
                                     <div class="ms-2">
                                         <VBtn color="#117864" variant="tonal" @click="eventoNuevaMascota()">
@@ -970,8 +973,8 @@ function eventMouseover() {
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
-                                <AppDateTimePicker v-model="fechaCita" :config="{ enableTime: false, dateFormat: 'd-m-Y' }"
-                                    placeholder="Fecha" />
+                                <AppDateTimePicker v-model="fechaCita"
+                                    :config="{ enableTime: false, dateFormat: 'd-m-Y' }" placeholder="Fecha" />
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
@@ -1025,27 +1028,29 @@ function eventMouseover() {
                         <VRow>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField v-model="dni" label="Documento de identidad"
-                                    :rules="[(v) => !!v || 'Campo requerido']" type="text" append-inner-icon="tabler-search"
-                                    @click:append-inner="buscarPersona()" :loading="loadings[1]" :disabled="loadings[1]" />
+                                    :rules="[(v) => !!v || 'Campo requerido']" type="text"
+                                    append-inner-icon="tabler-search" @click:append-inner="buscarPersona()"
+                                    :loading="loadings[1]" :disabled="loadings[1]" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-signature" v-model="nombre" label="Nombres"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido" label="Apellidos"
-                                    :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido"
+                                    label="Apellidos" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-map-pins" v-model="direccion" label="Dirección" />
+                                <VTextField prepend-inner-icon="tabler-map-pins" v-model="direccion"
+                                    label="Dirección" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined" v-model="sexo"
                                     label="Sexo" :items="itemsSexo" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-device-mobile" v-model="numCel" label="Nro. Celular"
-                                    :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VTextField prepend-inner-icon="tabler-device-mobile" v-model="numCel"
+                                    label="Nro. Celular" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-brand-mailgun" v-model="correo" label="Correo" />
@@ -1099,8 +1104,9 @@ function eventMouseover() {
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
-                                <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined" v-model="sexoMascota"
-                                    label="Genero" :items="itemsSexoMascota" :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined"
+                                    v-model="sexoMascota" label="Genero" :items="itemsSexoMascota"
+                                    :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
@@ -1146,7 +1152,7 @@ function eventMouseover() {
                 <div class="py-2 px-5 d-flex align-center justify-space-between w-100">
                     <VCardTitle class="py-0 px-0 title-menu-calendar">
                         <VIcon :icon="items.icon" :color="items.color"></VIcon> <span :class="`text-${items.color}`">{{
-                            items.estado }}</span>
+            items.estado }}</span>
                     </VCardTitle>
                     <div class="btn-close-menu">
                         <button class="close" type="button" @click="isMenuCalender = !isMenuCalender">x</button>
@@ -1299,8 +1305,9 @@ function eventMouseover() {
                     </VRow>
                     <VRow>
                         <VCol>
-                            <VAutocomplete prepend-inner-icon="tabler-stethoscope" variant="outlined" v-model="veterinario"
-                                label="Veterinarios" :items="dataVeterinario" item-title="apellido_nombre" item-value="id"
+                            <VAutocomplete prepend-inner-icon="tabler-stethoscope" variant="outlined"
+                                v-model="veterinario" label="Veterinarios" :items="dataVeterinario"
+                                item-title="apellido_nombre" item-value="id"
                                 :rules="[(v) => !!v || 'Campo requerido']" />
                         </VCol>
                     </VRow>

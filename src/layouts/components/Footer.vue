@@ -47,8 +47,11 @@ onMounted(() => {
 
   <div class="">
     <div class="container-pregunta-frecuente">
-      <VBtn @click="isActive = true" size="50" class="btn-pregunta-frecuente" color="success">
-        <VIcon size="20" icon="tabler-question-mark"></VIcon>
+      <VBtn @click="isActive = true" class="btn-pregunta-frecuente" color="success">
+        <VTooltip location="top" transition="scale-transition" activator="parent">
+          <span>Mas información</span>
+        </VTooltip>
+        <VIcon size="20" icon="tabler-question-mark"></VIcon> Preguntas frecuentes
       </VBtn>
     </div>
     <VBarraNavegacion v-model:isActive="isActive" :headers="headers" :items="dataPreguntaFrecuentes" />

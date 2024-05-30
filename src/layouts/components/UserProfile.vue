@@ -46,7 +46,7 @@ const cerrarSesion = () => {
           <VDivider class="my-2 user-menu" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem link to="/perfil">
 
             <template #prepend>
               <VIcon class="me-2" icon="tabler-user" size="22" />
@@ -56,14 +56,14 @@ const cerrarSesion = () => {
           </VListItem>
           <VDivider class="my-2 d-sm-flex  d-none" />
           <!-- 👉 Settings -->
-          <VListItem link>
+          <!-- <VListItem link>
 
             <template #prepend>
               <VIcon class="me-2" icon="tabler-settings" size="22" />
             </template>
 
             <VListItemTitle>Configuración</VListItemTitle>
-          </VListItem>
+          </VListItem> -->
 
           <!-- 👉 Logout -->
           <VListItem @click="cerrarSesion">

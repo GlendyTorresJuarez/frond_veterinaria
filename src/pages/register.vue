@@ -14,6 +14,7 @@ const apellido = ref('')
 const numCel = ref('')
 const sexo = ref([])
 const itemsSexo = ref(['Masculino', 'Femenino'])
+const direccion = ref('')
 
 const showPassword = ref(false)
 const showConfPassword = ref(false)
@@ -111,7 +112,7 @@ const registrarCliente = async () => {
     dni: numDocumento.value,
     nombre: nombre.value,
     apellido: apellido.value,
-    direccion: null,
+    direccion: direccion.value,
     num_cel: numCel.value,
     sexo: sexo.value,
     correo: correo.value,
@@ -226,9 +227,11 @@ function eventMouseover() {
             <VForm @submit.prevent="registrarUsuario()">
               <VRow>
                 <VCol cols="12" sm="12" md="12">
-                  <VTextField v-model="numDocumento" label="Documento de identidad"
+                  <VTextField maxlength="8" v-model="numDocumento" label="Documento de identidad"
                     :rules="[(v) => !!v || 'Campo requerido']" type="text" append-inner-icon="tabler-search"
-                    @click:append-inner="buscarPersonal()" :loading="loadings[5]" :disabled="loadings[5]" />
+                    @click:append-inner="buscarPersonal()" :loading="loadings[5]"
+                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    :disabled="loadings[5]" />
                 </VCol>
 
                 <VCol cols="12" sm="12" md="12">
@@ -241,19 +244,24 @@ function eventMouseover() {
                     :rules="[(v) => !!v || 'Campo requerido']" />
                 </VCol>
 
-                <VCol cols="12" sm="6" md="6">
-                  <VTextField prepend-inner-icon="tabler-device-mobile" v-model="numCel" label="Nro. Celular"
+                <VCol cols="12" sm="12" md="12">
+                  <VTextField prepend-inner-icon="tabler-mail" v-model="correo" label="Correo"
                     :rules="[(v) => !!v || 'Campo requerido']" />
+                </VCol>
+
+                <VCol cols="12" sm="6" md="6">
+                  <VTextField type="number" maxlength="9" prepend-inner-icon="tabler-device-mobile" v-model="numCel"
+                    label="Nro. Celular" :rules="[(v) => !!v || 'Campo requerido']"
+                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                </VCol>
+
+                <VCol cols="12" sm="6" md="6">
+                  <VTextField prepend-inner-icon="tabler-map-pins" v-model="direccion" label="dirección" />
                 </VCol>
 
                 <VCol cols="12" sm="6" md="6">
                   <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined" v-model="sexo" label="Sexo"
                     :items="itemsSexo" :rules="[(v) => !!v || 'Campo requerido']" />
-                </VCol>
-
-                <VCol cols="12" sm="6" md="6">
-                  <VTextField prepend-inner-icon="tabler-mail" v-model="correo" label="Correo"
-                    :rules="[(v) => !!v || 'Campo requerido']" />
                 </VCol>
 
                 <VCol cols="12" sm="6" md="6">

@@ -15,7 +15,7 @@ const router = createRouter({
 
         //si el usuario es diferente de nulo y es manage puede acceder al sistema
         if (userRole !== null) {
-          return { name: 'index' }
+          return { name: 'citas' }
         }
 
         return { name: 'login', query: to.query }

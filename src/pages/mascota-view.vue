@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import { es } from "date-fns/locale";
 
 moment.lang("es", {
     months:
@@ -51,6 +50,8 @@ const dataLog = ref([]);
 //*variables del toast*///
 const valueToas = ref({})
 const timer = ref(null)
+
+const usuario = ref(JSON.parse(localStorage.getItem('userData')))
 
 const headerLog = ref([
     {
@@ -133,6 +134,9 @@ const listaMascotas = async () => {
     dataMascota.value = []
 
     dataMascota.value = await axios.get("backend-citas/lista-mascota/").then(res => res.data.data).catch(error => error)
+    if (usuario.value.key_rol == 3) {
+        dataMascota.value = dataMascota.value.filter(items => items.dni.includes(usuario.value.documento))
+    }
 
     loadings.value[0] = false
 }
@@ -142,6 +146,7 @@ const eventoNuevo = () => {
 
     titleCrud.value = 'Registrar mascota'
     btnTextoCrud.value = 'Guardar'
+
     limpiar()
 }
 
@@ -153,11 +158,14 @@ const limpiar = () => {
     color.value = null
     tipo.value = []
     raza.value = []
-    cliente.value = []
+    if (usuario.value.key_rol == 3) {
+        cliente.value = dataClientes.value.find(items => items.dni == usuario.value.documento).id
+    } else {
+        cliente.value = []
+    }
 }
 
 const eventoEditar = (items) => {
-    console.log(items);
     modal.value[0] = true
 
     titleCrud.value = 'Actualizar datos de la mascota'
@@ -188,7 +196,7 @@ const eventoCrud = async () => {
         sexo: sexo.value,
         color: color.value,
         key_estado: 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     var isVerificar = cliente.value.length == 0 ||
@@ -259,7 +267,7 @@ const eventoConfirmacion = async () => {
     loadings.value[2] = true
     var data = {
         key_estado: confEvent.value == 1 ? 2 : 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     await axios({
@@ -381,8 +389,9 @@ function eventMouseover() {
             </template>
         </v-breadcrumbs>
 
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
 
         <VRow class="mt-5">
             <VCol cols="12">
@@ -446,7 +455,8 @@ function eventMouseover() {
                                     <VIcon color="success " size="19" icon="tabler-checks" />
                                 </VBtn>
 
-                                <VBtn icon size="x-small" color="default" variant="text" @click="eventoDialogo(item.id, 3)">
+                                <VBtn icon size="x-small" color="default" variant="text"
+                                    @click="eventoDialogo(item.id, 3)">
                                     <VIcon color="error" size="19" icon="tabler-trash" />
                                 </VBtn>
 
@@ -484,13 +494,13 @@ function eventMouseover() {
                 <VForm @submit.prevent="eventoCrud()">
                     <VCardText>
                         <VRow>
-                            <VCol cols="12" sm="12" md="12" v-if="idMascota == 0">
+                            <VCol cols="12" sm="12" md="12" v-if="idMascota == 0 && usuario.key_rol != 3">
                                 <VAutocomplete prepend-inner-icon="tabler-friends" variant="outlined" v-model="cliente"
                                     label="Cliente" :items="dataClientes" item-title="apellido_nombre" item-value="id"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
 
-                            <VCol cols="12" sm="12" md="12" v-else>
+                            <VCol cols="12" sm="12" md="12" v-if="idMascota > 0 || usuario.key_rol == 3">
                                 <VTextField prepend-inner-icon="tabler-friends"
                                     :value="dataClientes.find(x => x.id == cliente).apellido_nombre" :disabled="true" />
                             </VCol>
@@ -502,7 +512,7 @@ function eventMouseover() {
 
                             <VCol cols="12" sm="12" md="12">
                                 <VueDatePicker prepend-inner-icon="tabler-calendar" v-model="fechaNacimiento"
-                                    placeholder="Fecha de nacimiento" auto-apply :format-locale="es" text-input
+                                    placeholder="Fecha de nacimiento" auto-apply :format-locale="en" text-input
                                     format="dd/MM/yyyy" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
 
@@ -526,6 +536,15 @@ function eventMouseover() {
                                 <VAutocomplete prepend-inner-icon="tabler-paw" variant="outlined" v-model="raza"
                                     label="Raza" :items="dataRaza" item-title="nombre_raza" item-value="id"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
+                            </VCol>
+
+                            <VCol v-if="raza.length != 0">
+                                <h5>
+                                    Informacion de la raza
+                                </h5>
+                                <p class="p-0 m-0" style="font-size: 12px;">{{ dataRaza.filter(r => r.id ==
+            raza)[0]?.descripcion || ""
+                                    }}</p>
                             </VCol>
 
                         </VRow>
@@ -601,14 +620,14 @@ function eventMouseover() {
                             <div class="text-center">
                                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                                     {{
-                                        moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
-    }}
+            moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                                    }}
                                     <br> {{
-                                        moment(item.date).format('h:mm:ss a') }}</span>
+            moment(item.date).format('h:mm:ss a') }}</span>
                             </div>
                         </template>
                         <template #usuario="{ item }">
-                            <span>a.castillo</span>
+                            <span>{{ item.nombre_usuario }}</span>
                         </template>
                     </VDataTable>
                     <VCardText class="d-flex flex-wrap justify-center gap-4">
@@ -622,3 +641,9 @@ function eventMouseover() {
 
     </div>
 </template>
+
+<route lang="yaml">
+    meta:
+      action: read
+      subject: Mascotas
+</route>

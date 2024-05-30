@@ -38,6 +38,8 @@ const colorConf = ref("");
 const confEvent = ref("");
 const dataLog = ref([]);
 
+const usuario = ref(JSON.parse(localStorage.getItem('userData')))
+
 const headerLog = ref([
     {
         title: 'evento',
@@ -172,7 +174,7 @@ const eventoCrud = async () => {
         sexo: sexo.value,
         correo: correo.value,
         key_estado: 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     var isVerificar = dni.value == '' || nombre.value == '' || apellido.value == '' || direccion.value == '' || sexo.value.length == 0
@@ -242,7 +244,7 @@ const eventoConfirmacion = async () => {
     loadings.value[3] = true
     var data = {
         key_estado: confEvent.value == 1 ? 2 : 1,
-        key_usuario: null,
+        key_usuario: usuario.value.user_id,
     }
 
     await axios({
@@ -360,8 +362,9 @@ function eventMouseover() {
             </template>
         </v-breadcrumbs>
 
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
 
         <VRow class="mt-5">
             <VCol cols="12">
@@ -425,7 +428,8 @@ function eventMouseover() {
                                     <VIcon color="success " size="19" icon="tabler-checks" />
                                 </VBtn>
 
-                                <VBtn icon size="x-small" color="default" variant="text" @click="eventoDialogo(item.id, 3)">
+                                <VBtn icon size="x-small" color="default" variant="text"
+                                    @click="eventoDialogo(item.id, 3)">
                                     <VIcon color="error" size="19" icon="tabler-trash" />
                                 </VBtn>
 
@@ -467,16 +471,18 @@ function eventMouseover() {
                         <VRow>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField v-model="dni" label="Documento de identidad"
-                                    :rules="[(v) => !!v || 'Campo requerido']" type="text" append-inner-icon="tabler-search"
-                                    @click:append-inner="buscarPersona()" :loading="loadings[1]" :disabled="loadings[1]" />
+                                    :rules="[(v) => !!v || 'Campo requerido']" type="number"
+                                    append-inner-icon="tabler-search" @click:append-inner="buscarPersona()"
+                                    :loading="loadings[1]" :disabled="loadings[1]" maxlength="8"
+                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-signature" v-model="nombre" label="Nombres"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido" label="Apellidos"
-                                    :rules="[(v) => !!v || 'Campo requerido']" />
+                                <VTextField prepend-inner-icon="tabler-brand-lastfm" v-model="apellido"
+                                    label="Apellidos" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-map-pins" v-model="direccion" label="Dirección"
@@ -487,8 +493,9 @@ function eventMouseover() {
                                     label="Sexo" :items="itemsSexo" :rules="[(v) => !!v || 'Campo requerido']" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
-                                <VTextField prepend-inner-icon="tabler-device-mobile" v-model="numCel"
-                                    label="Nro. Celular" />
+                                <VTextField type="number" prepend-inner-icon="tabler-device-mobile" v-model="numCel"
+                                    label="Nro. Celular" maxlength="9"
+                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </VCol>
                             <VCol cols="12" sm="12" md="12">
                                 <VTextField prepend-inner-icon="tabler-brand-mailgun" v-model="correo" label="Correo" />
@@ -566,10 +573,10 @@ function eventMouseover() {
                             <div class="text-center">
                                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                                     {{
-                                        moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
-    }}
+            moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                                    }}
                                     <br> {{
-                                        moment(item.date).format('h:mm:ss a') }}</span>
+            moment(item.date).format('h:mm:ss a') }}</span>
                             </div>
                         </template>
                         <template #usuario="{ item }">

@@ -1,5 +1,12 @@
 export default [
   {
+    title: 'Prog. de citas',
+    to: { name: 'citas' },
+    icon: { icon: 'tabler-calendar-search' },
+    action: 'read',
+    subject: 'citas'
+  },
+  {
     title: 'Dashboard',
     to: { name: 'index' },
     icon: { icon: 'tabler-dashboard' },
@@ -41,20 +48,14 @@ export default [
     title: 'Mascotas',
     to: { name: 'mascota-view' },
     icon: { icon: 'tabler-dog' },
+    action: 'read',
+    subject: 'Mascotas'
   },
   // {
   //   title: 'Citas',
   //   to: { name: 'citas-view' },
   //   icon: { icon: 'tabler-report-medical' },
   // },
-  {
-    title: 'Prog. de citas',
-    to: { name: 'citas' },
-    icon: { icon: 'tabler-calendar-search' },
-    action: 'read',
-    subject: 'citas'
-  },
-
   {
     title: 'Usuario',
     to: { name: 'usuarios-view' },

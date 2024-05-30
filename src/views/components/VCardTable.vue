@@ -1,7 +1,6 @@
 <script setup>
 import img1 from "@/assets/images/evento-calendar.svg";
 import moment from 'moment';
-import { watch } from 'vue';
 
 
 const props = defineProps({
@@ -36,7 +35,7 @@ const onGet = (params) => {
 
 const paginateArray = (array, perPage, page) => array.slice((page - 1) * perPage, page * perPage)
 
-watch(() => {
+watchEffect(() => {
     procesarData.value = onGet({
         perPage: rowPerPage.value,
         currentPage: currentPage.value,
@@ -72,7 +71,8 @@ watch(() => {
 
                 <div class="card-calendar-hora">
                     <div class="calendar-hora">
-                        <div :title='moment(item.hora_fin, "HH:mm a").format("HH:mm a")' class="text-hora-calendar font-12">
+                        <div :title='moment(item.hora_fin, "HH:mm a").format("HH:mm a")'
+                            class="text-hora-calendar font-12">
                             {{ moment(item.hora_fin, "HH:mm a").format("HH:mm") }}
                         </div>
                     </div>
@@ -99,7 +99,8 @@ watch(() => {
             </div>
         </div>
 
-        <VCardText v-show="formateoData.length > 0" class="d-flex align-center flex-wrap justify-center gap-4 py-3 px-5">
+        <VCardText v-show="formateoData.length > 0"
+            class="d-flex align-center flex-wrap justify-center gap-4 py-3 px-5">
 
             <VPagination v-model="currentPage" size="small" :total-visible="5" rounded="circle" :length="totalPage" />
         </VCardText>

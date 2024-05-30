@@ -35,6 +35,7 @@ const dataLog = ref([]);
 const dataTipoServicio = ref([]);
 const tipoServicio = ref([]);
 const duracion = ref('')
+const usuario = ref(JSON.parse(localStorage.getItem('userData')))
 
 const headerLog = ref([
   {
@@ -149,7 +150,7 @@ const eventoCrud = async () => {
     duracion: duracion.value,
     key_tipo_servicio: tipoServicio.value,
     key_estado: 1,
-    key_usuario: null,
+    key_usuario: usuario.value.user_id,
   }
 
   var isVerificar = servicio.value == '' || precio.value == '' || tipoServicio.value.length == 0 || duracion.value == ''
@@ -219,7 +220,7 @@ const eventoConfirmacion = async () => {
   loadings.value[2] = true
   var data = {
     key_estado: confEvent.value == 1 ? 2 : 1,
-    key_usuario: null,
+    key_usuario: usuario.value.user_id,
   }
 
   await axios({
@@ -535,10 +536,10 @@ function eventMouseover() {
               <div class="text-center">
                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                   {{
-                    moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
-  }}
+      moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                  }}
                   <br> {{
-                    moment(item.date).format('h:mm:ss a') }}</span>
+      moment(item.date).format('h:mm:ss a') }}</span>
               </div>
             </template>
             <template #usuario="{ item }">

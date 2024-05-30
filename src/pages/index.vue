@@ -17,7 +17,7 @@ moment.lang("es", {
 });
 
 
-const selectTitle = ref(['Ultimos 7 dias'])
+const selectTitle = ref(['Anual'])
 const usuario = ref(JSON.parse(localStorage.getItem('userData')))
 const datosTotalCita = ref([])
 const clientesNuevos = ref([])
@@ -25,6 +25,7 @@ const clientesFrecuentes = ref([])
 const totalCitasIngresos = ref([])
 const serviciosUtil = ref([])
 const totalMacotaCliente = ref([])
+const totalTiempoReg = ref([])
 
 const convertirTexto = () => {
   var caracter = usuario.value.nombre_apellido.toLowerCase().split(' ')
@@ -44,6 +45,7 @@ const consulta = async () => {
   totalCitasIngresos.value = []
   serviciosUtil.value = []
   totalMacotaCliente.value = []
+  totalTiempoReg.value = []
 
   var tipo = selectTitle.value[0] == 'Ultimos 7 dias' || selectTitle.value[0] == 'Ultimos 30 dias' ? 'fechas' : 'anual'
   var fechaInicio = selectTitle.value[0] == 'Ultimos 7 dias' ? moment().subtract(7, 'days').format('YYYY-MM-DD') : selectTitle.value[0] == 'Ultimos 30 dias' ? moment().subtract(30, 'days').format('YYYY-MM-DD') : ''
@@ -61,8 +63,8 @@ const consulta = async () => {
   totalCitasIngresos.value = await axios({ url: 'backend-citas/total-citas-ingresos/', method: 'POST', data: data }).then(res => res.data.data).catch(err => err)
   serviciosUtil.value = await axios({ url: 'backend-citas/total-servicios-utilizados/', method: 'POST', data: data }).then(res => res.data.data).catch(err => err)
   totalMacotaCliente.value = await axios({ url: 'backend-citas/total-mascotas-clientes/', method: 'POST', data: data }).then(res => res.data.data).catch(err => err)
+  totalTiempoReg.value = await axios({ url: 'backend-citas/total-tiempo-registro/', method: 'POST', data: data }).then(res => res.data.data).catch(err => err)
 
-  console.log(totalMacotaCliente.value);
 }
 onMounted(() => {
   consultasTotalCitas()
@@ -88,7 +90,7 @@ const generarColorHex = () => {
 
 const chartConfig = computed(() => {
   var temasColores = Array.from({ length: serviciosUtil.value.length }, generarColorHex)
-  console.log(temasColores);
+
   return [
     {
       chartOptions: {
@@ -615,6 +617,357 @@ const chartConfig = computed(() => {
         data: totalMacotaCliente.value.map(x => x.total_mascota)
       }],
     },
+
+    {
+      chartOptions: {
+        chart: {
+          width: '100%',
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+          toolbar: { show: false },
+        },
+        title: {
+          text: 'Tiempo promedio de registro de citas',
+          align: 'left',
+
+          color: '#8b90b2',
+
+        },
+        colors: ['#4472C4', '#ED7D31'],
+        stroke: {
+          //curve: 'smooth',
+          width: 3
+        },
+        markers: {
+          size: 3,
+          strokeWidth: 2,
+          strokeOpacity: 0,
+          colors: ['#4472C4', '#ED7D31'],
+          strokeColors: ['#4472C4', '#ED7D31'],
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: totalTiempoReg.value.map(x => moment(x.fecha, 'YYYY-MM-DD').format('DD MMM')),
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+            formatter: function (value) {
+              // Personaliza el formato de la etiqueta del eje Y
+              if (value != null || value != undefined) {
+                return `${value}`
+              } else {
+                return ''
+              }
+            },
+          },
+        }
+      },
+      series: [
+        {
+          data: totalTiempoReg.value.map(f => f.segundos),
+        }
+      ]
+    },
+  ]
+})
+
+const chartPreTest = computed(() => {
+  const totalDias = []
+  for (let i = 1; i <= 30; i++) {
+    totalDias.push(i)
+  }
+
+  const totalTest = [
+    {
+      name: "Pre Test",
+      data: [
+        7.59,
+        7.01,
+        8.63,
+        9.00,
+        10.8,
+        7.94,
+        7.79,
+        9.38,
+        9.21,
+        9.09,
+        11.5,
+        6.23,
+        8.73,
+        9.77,
+        8.46,
+        7.91,
+        8.08,
+        8.69,
+        7.43,
+        9.32,
+        10.5,
+        9.47,
+        7.79,
+        8.24,
+        8.08,
+        11.8,
+        9.40,
+        6.01,
+        6.33,
+        7.93,
+
+      ]
+    },
+    {
+      name: "Post Test",
+      data: [
+        1.03,
+        1.66,
+        1.54,
+        1.35,
+        2.24,
+        1.50,
+        1.09,
+        1.52,
+        0.97,
+        1.52,
+        1.49,
+        1.42,
+        1.38,
+        2.16,
+        1.62,
+        1.51,
+        1.17,
+        0.96,
+        1.82,
+        1.51,
+        0.94,
+        1.24,
+        0.93,
+        2.10,
+        1.39,
+        0.90,
+        1.87,
+        1.57,
+        1.46,
+        1.68,
+      ]
+    }
+  ]
+
+  const totalTasaCliente = [
+    {
+      name: "Pre Test",
+      data: [
+        0.83,
+        1.22,
+        2.00,
+        0.79,
+        2.33,
+        0.39,
+        1.15,
+        1.87,
+        0.74,
+        0.00,
+        0.37,
+        1.46,
+        0.72,
+        1.08,
+        0.00,
+        1.41,
+        0.70,
+        0.70,
+        0.35,
+        0.00,
+        0.69,
+        1.02,
+        1.01,
+        1.33,
+        0.33,
+        0.99,
+        0.33,
+        1.61,
+        0.96,
+        1.26,
+      ]
+    },
+    {
+      name: "Post Test",
+      data: [
+        1.64,
+        2.40,
+        0.79,
+        2.70,
+        2.26,
+        1.85,
+        1.10,
+        1.80,
+        1.42,
+        1.05,
+        1.72,
+        2.68,
+        1.97,
+        1.62,
+        2.22,
+        1.25,
+        1.54,
+        1.81,
+        1.19,
+        2.33,
+        1.44,
+        1.97,
+        1.66,
+        1.90,
+        2.13,
+        1.83,
+        1.29,
+        2.02,
+        1.00,
+        1.72,
+      ]
+    }
+  ]
+  return [
+    {
+      chartOptions: {
+        chart: {
+          width: '100%',
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+          toolbar: { show: false },
+        },
+        title: {
+          text: 'Tiempo promedio de registro de citas',
+          align: 'left',
+
+          color: '#8b90b2',
+
+        },
+        colors: ['#4472C4', '#ED7D31'],
+        stroke: {
+          //curve: 'smooth',
+          width: 3
+        },
+        markers: {
+          size: 3,
+          strokeWidth: 2,
+          strokeOpacity: 0,
+          colors: ['#4472C4', '#ED7D31'],
+          strokeColors: ['#4472C4', '#ED7D31'],
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: totalDias,
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+            formatter: function (value) {
+              // Personaliza el formato de la etiqueta del eje Y
+              if (value != null || value != undefined) {
+                return `${value}`
+              } else {
+                return ''
+              }
+            },
+          },
+        }
+      },
+      series: totalTest,
+    },
+
+    {
+      chartOptions: {
+        chart: {
+          width: '100%',
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+          toolbar: { show: false },
+        },
+        title: {
+          text: 'Tasa de incremento de clientes',
+          align: 'left',
+
+          color: '#8b90b2',
+
+        },
+        colors: ['#4472C4', '#ED7D31'],
+        stroke: {
+          //curve: 'smooth',
+          width: 3
+        },
+        markers: {
+          size: 3,
+          strokeWidth: 2,
+          strokeOpacity: 0,
+          colors: ['#4472C4', '#ED7D31'],
+          strokeColors: ['#4472C4', '#ED7D31'],
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: totalDias,
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#8b90b2',
+              fontSize: '11px',
+              fontFamily: 'Public Sans',
+            },
+            formatter: function (value) {
+              // Personaliza el formato de la etiqueta del eje Y
+              if (value != null || value != undefined) {
+                return `${value}`
+              } else {
+                return ''
+              }
+            },
+          },
+        }
+      },
+      series: totalTasaCliente,
+    },
   ]
 })
 </script>
@@ -648,6 +1001,17 @@ const chartConfig = computed(() => {
           </div>
         </div>
       </VCol>
+
+      <VCol cols="12" md="6">
+        <VueApexCharts :options="chartPreTest[0].chartOptions" :series="chartPreTest[0].series" height="300"
+          class="mt-3 w-100" />
+      </VCol>
+
+      <VCol cols="12" md="6">
+        <VueApexCharts :options="chartPreTest[1].chartOptions" :series="chartPreTest[1].series" height="300"
+          class="mt-3 w-100" />
+      </VCol>
+
     </VRow>
 
     <VRow>
@@ -677,6 +1041,11 @@ const chartConfig = computed(() => {
 
           </div>
         </div>
+      </VCol>
+
+      <VCol cols="12">
+        <VueApexCharts :options="chartConfig[6].chartOptions" :series="chartConfig[6].series" height="300"
+          class="mt-3 w-100" />
       </VCol>
 
       <VCol md="4" cols="12">
@@ -731,8 +1100,14 @@ const chartConfig = computed(() => {
       <VCol md="8" cols="12">
         <VCard flat title="Informes de los clientes" :subtitle="`Resumen de los nuevos clientes en ${selectTitle[0]}`">
           <VCardText>
-            <VueApexCharts :options="chartConfig[0].chartOptions" :series="chartConfig[0].series" height="300"
-              class="mt-3 w-100" />
+            <div v-if="chartConfig[0].series[0].data.length != 0">
+              <VueApexCharts :options="chartConfig[0].chartOptions" :series="chartConfig[0].series" height="300"
+                class="mt-3 w-100" />
+            </div>
+
+            <div v-else class="d-flex align-center justify-center" style="height: 30vh;">
+              <span>NO SE ENCONTRARON DATOS</span>
+            </div>
           </VCardText>
         </VCard>
       </VCol>
@@ -740,8 +1115,13 @@ const chartConfig = computed(() => {
       <VCol md="7" cols="12">
         <VCard flat title="Informes de ingresos" :subtitle="`Resumen de ingresos ${selectTitle[0]}`">
           <VCardText>
-            <VueApexCharts :options="chartConfig[1].chartOptions" :series="chartConfig[1].series" height="300"
-              class="mt-3 w-100" />
+            <div v-if="chartConfig[1].series[0].data.length != 0">
+              <VueApexCharts :options="chartConfig[1].chartOptions" :series="chartConfig[1].series" height="300"
+                class="mt-3 w-100" />
+            </div>
+            <div v-else class="d-flex align-center justify-center" style="height: 30vh;">
+              <span>NO SE ENCONTRARON DATOS</span>
+            </div>
           </VCardText>
         </VCard>
       </VCol>
@@ -773,8 +1153,16 @@ const chartConfig = computed(() => {
             <VCardSubtitle>Reporte de cantidad de citas por dias </VCardSubtitle>
           </VCardItem>
           <VCardText class="">
-            <VueApexCharts :options="chartConfig[2].chartOptions" :series="chartConfig[2].series" height="250"
-              class="mt-3 w-100" />
+
+            <div v-if="chartConfig[2].series[0].data.length != 0">
+              <VueApexCharts :options="chartConfig[2].chartOptions" :series="chartConfig[2].series" height="250"
+                class="mt-3 w-100" />
+            </div>
+
+            <div v-else class="d-flex align-center justify-center" style="height: 15vh;">
+              <span>NO SE ENCONTRARON DATOS</span>
+            </div>
+
           </VCardText>
         </VCard>
       </VCol>
@@ -783,8 +1171,15 @@ const chartConfig = computed(() => {
         <VCard flat title="Servicios mas solicitados"
           :subtitle="`Resumen de los servicios mas solicitado en ${selectTitle[0]}`">
           <VCardText>
-            <VueApexCharts :options="chartConfig[3].chartOptions" :series="chartConfig[3].series" height="300"
-              class="mt-3 w-100" />
+            <div v-if="chartConfig[3].series.length != 0">
+              <VueApexCharts :options="chartConfig[3].chartOptions" :series="chartConfig[3].series" height="300"
+                class="mt-3 w-100" />
+            </div>
+
+            <div v-else class="d-flex align-center justify-center" style="height: 15vh;">
+              <span>NO SE ENCONTRARON DATOS</span>
+            </div>
+
           </VCardText>
         </VCard>
       </VCol>

@@ -258,11 +258,6 @@ const finalizarCita = async () => {
         key_estado: 6
     }
 
-    if (diagnostico.value == '') {
-        loadings.value[1] = false
-        return false
-    }
-
     await axios({
         url: 'backend-citas/finalizar-citas/',
         method: 'POST',
@@ -302,6 +297,7 @@ const reporteGeneral = async (event) => {
     urlDocumento.value = ''
     loadings.value[2] = true
     isActiveNav.value = true
+
     var data = {
         "key_cita": id.value
     }
@@ -453,6 +449,10 @@ const zoomOut = () => {
         document.getElementById('pdfGeneral').style.height = pdfHeight.toString() + 'px'
     }
 }
+
+const editar = () => {
+    isActiveCampos.value = false
+}
 onMounted(() => {
     obtenerCitaId()
     obtenerTriajeId()
@@ -496,8 +496,9 @@ function eventMouseover() {
         </div>
     </div>
     <div v-else class="position-relative w-100">
-        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage" :status="valueToas.status"
-            :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover" @mouseleave="eventMause"> </VToast>
+        <VToast :icon="valueToas.icon" :title="valueToas.title" :menssage="valueToas.menssage"
+            :status="valueToas.status" :type="valueToas.type" @closeToast="closeToast" @mouseover="eventMouseover"
+            @mouseleave="eventMause"> </VToast>
         <div class="header-detalle-cita">
             <div class="breadcrumbs-detalle">
                 <div class="d-flex align-center gap-1">
@@ -543,10 +544,16 @@ function eventMouseover() {
                     </div>
                 </div>
                 <div class="">
-                    <VBtn v-if="!isActiveCampos" class="btn-header-detalle" variant="outlined" color="secondary"
+                    <!-- <VBtn v-if="!isActiveCampos" class="btn-header-detalle" variant="outlined" color="secondary"
                         rounded="pill">
                         <VIcon start icon="tabler-lock-off"></VIcon>
                         Cancelar
+                    </VBtn> -->
+
+                    <VBtn type="submit" :loading="loadings[1]" :disabled="loadings[1]" @click="editar()"
+                        class="ms-3 btn-header-detalle" variant="outlined" color="#3498DB" rounded="pill">
+                        <VIcon start icon="tabler-edit"></VIcon>
+                        editar
                     </VBtn>
 
                     <VBtn v-if="!isActiveCampos" type="submit" :loading="loadings[1]" :disabled="loadings[1]"
@@ -680,7 +687,8 @@ function eventMouseover() {
                 </VCardTitle>
 
                 <VCardText style="font-size: 12.5px">
-                    <span>En este apartado de complementos podras añadir el diagnostico y una serie de acciones para generar
+                    <span>En este apartado de complementos podras añadir el diagnostico y una serie de acciones para
+                        generar
                         el informe de tu citas.</span>
                 </VCardText>
 
@@ -748,7 +756,8 @@ function eventMouseover() {
                                     <VCol cols="12">
                                         <VRow no-gutters>
                                             <VCol cols="12" md="3" class="d-flex align-items-center">
-                                                <label class="v-label text-body-2 text-high-emphasis" for="fc">Frecuencia
+                                                <label class="v-label text-body-2 text-high-emphasis"
+                                                    for="fc">Frecuencia
                                                     cardiaca</label>
                                             </VCol>
 
@@ -763,7 +772,8 @@ function eventMouseover() {
                                     <VCol cols="12">
                                         <VRow no-gutters>
                                             <VCol cols="12" md="3" class="d-flex align-items-center">
-                                                <label class="v-label text-body-2 text-high-emphasis" for="fr">Frecuencia
+                                                <label class="v-label text-body-2 text-high-emphasis"
+                                                    for="fr">Frecuencia
                                                     respiratoria</label>
                                             </VCol>
 
@@ -810,7 +820,8 @@ function eventMouseover() {
                                                         <div v-if="!isActiveMedica"
                                                             class="d-flex align-center justify-center ">
                                                             <VBtn :disabled="isActiveCampos" variant="outlined"
-                                                                @click="isActiveMedica = true; medicamento = ''" size="38">
+                                                                @click="isActiveMedica = true; medicamento = ''"
+                                                                size="38">
                                                                 <VIcon icon="tabler-edit" size="22" />
                                                             </VBtn>
 
@@ -823,7 +834,8 @@ function eventMouseover() {
                                                         <div v-if="isActiveMedica"
                                                             class="d-flex align-center justify-center ">
                                                             <VBtn variant="outlined" @click="agregarMedicamento();"
-                                                                size="38" :loading="loadings[3]" :disabled="loadings[3]">
+                                                                size="38" :loading="loadings[3]"
+                                                                :disabled="loadings[3]">
                                                                 <VIcon icon="tabler-plus" size="22" />
 
                                                                 <template #loader>
@@ -955,7 +967,7 @@ function eventMouseover() {
 
                 <VDivider class="mx-6 ms-6" />
 
-                <VCardText class="p-0 position-relative mx-6 ms-6">
+                <VCardText v-if="dataMedicamento.length != 0" class="p-0 position-relative mx-6 ms-6">
                     <a @click="reporteGeneral(1)" class="d-flex align-center px-6 py-4 container-documentos"
                         href="javascript:;">
                         <div>

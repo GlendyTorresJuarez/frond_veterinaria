@@ -136,7 +136,8 @@ onMounted(() => {
             <span style="color: rgb(180 255 111)"> CLINICA VETERINARIA CHAMPAGNAT</span>
           </h1>
           <p class="mb-4 opacity-90 text-justify" style="color: #fff">
-            Tenemos como único propósito brindar la mejor atención veterinaria profesional, personalizada, atenta y llena
+            Tenemos como único propósito brindar la mejor atención veterinaria profesional, personalizada, atenta y
+            llena
             de mucho amor para sus mascotas, que son miembros especiales de sus familias, asegurando su bienestar y
             recuperación. Contamos con la más alta tecnología médica y profesionalismo que siempre nos ha caracterizado.
             Priorizando siempre el bienestar de tu pequeño/a.
@@ -170,16 +171,18 @@ onMounted(() => {
                 </VCol>
 
                 <VCol cols="12">
-                  <VTextField prepend-inner-icon="tabler-brand-samsungpass" v-model="password" label="Contraseña" :rules="[
-                    (v) => !!v || 'El campo Contraseña es obligatorio',
-                  ]" :type="isPasswordVisible ? 'text' : 'password'" :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-  " @click:append-inner="isPasswordVisible = !isPasswordVisible" />
+                  <VTextField prepend-inner-icon="tabler-brand-samsungpass" v-model="password" label="Contraseña"
+                    :rules="[
+      (v) => !!v || 'El campo Contraseña es obligatorio',
+    ]" :type="isPasswordVisible ? 'text' : 'password'" :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
+      " @click:append-inner="isPasswordVisible = !isPasswordVisible" />
 
                   <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
                     <VCheckbox v-model="rememberMe" label="Recordar contraseña" />
-                    <a class="text-primary ms-2 mb-1" href="#">
+                    <RouterLink class="text-primary ms-2  mb-1" :to="{ name: 'forgot-password' }">
                       ¿Olvidaste tu contraseña?
-                    </a>
+                    </RouterLink>
+
                   </div>
 
                   <VBtn v-if="!loadings[0]" variant="outlined" type="submit" class="d-block mb-2 bt-login">
