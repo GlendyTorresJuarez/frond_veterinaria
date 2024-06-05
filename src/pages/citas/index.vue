@@ -1053,7 +1053,7 @@ function eventMouseover() {
                                     Informacion del servicio
                                 </h5>
                                 <p class="p-0 m-0" style="font-size: 12px;">{{ dataServicios.filter(r => r.id ==
-            servicio)[0]?.descripcion || "No hay información" }}</p>
+                                    servicio)[0]?.descripcion || "No hay información" }}</p>
                             </VCol>
 
                             <VCol cols="12" sm="6" md="6">
@@ -1241,11 +1241,11 @@ function eventMouseover() {
         </VDialog>
 
         <div id="menu-calender" v-show="isMenuCalender">
-            <VCard style="width:360px" v-for="items in  itemsCitasId ">
+            <VCard style="width:360px" v-for="items in itemsCitasId ">
                 <div class="py-2 px-5 d-flex align-center justify-space-between w-100">
                     <VCardTitle class="py-0 px-0 title-menu-calendar">
                         <VIcon :icon="items.icon" :color="items.color"></VIcon> <span :class="`text-${items.color}`">{{
-            items.estado }}</span>
+                            items.estado }}</span>
                     </VCardTitle>
                     <div class="btn-close-menu">
                         <button class="close" type="button" @click="isMenuCalender = !isMenuCalender">x</button>
