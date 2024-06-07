@@ -37,13 +37,16 @@ onMounted(() => {
     <span class="d-flex align-center">
       &copy;
       {{ new Date().getFullYear() }}
-      <span class="text-uppercase ms-1">COPYRIGHT Clinica Veterinaria Champagnat</span>
+      <span class="text-uppercase ms-1">COPYRIGHT Clinica Veterinaria Bamby Vet</span>
     </span>
     <!-- 👉 Footer: right content -->
     <span class="d-md-flex gap-x-4 text-primary d-none">
-      Hecho por ACN <VIcon color="#b9770e " icon="tabler-code"></VIcon>
+      <!--Hecho por ACN <VIcon color="#b9770e " icon="tabler-code"></VIcon>-->
     </span>
   </div>
+
+
+
 
   <div class="">
     <div class="container-pregunta-frecuente">
