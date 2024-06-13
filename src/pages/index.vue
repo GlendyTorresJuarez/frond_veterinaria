@@ -677,7 +677,16 @@ const chartConfig = computed(() => {
               }
             },
           },
-        }
+        },
+        tooltip: {
+          custom(data) {
+            return `<div class='bar-chart pa-2'>
+                    <span class="title">Total en segundos</span>
+                    <br>
+                    <spa class="sub-title">${data.series[data.seriesIndex][data.dataPointIndex]}</span>
+        </div>`
+          },
+        },
       },
       series: [
         {

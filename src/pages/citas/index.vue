@@ -949,7 +949,9 @@ function eventMouseover() {
                         <VDivider />
 
                         <div class="calendario d-flex align-center justify-center">
-                            <datepicker v-model="fechaActual" :inline="true" language="es"></datepicker>
+                            <!-- <datepicker v-model="fechaActual" :inline="true" language="es"></datepicker> -->
+                            <AppDateTimePicker v-model="fechaActual" label="" class="calendar-date-picker"
+                                :config="{ inline: true }" />
 
                         </div>
 
@@ -1216,6 +1218,15 @@ function eventMouseover() {
                                 <VAutocomplete prepend-inner-icon="tabler-paw" variant="outlined" v-model="raza"
                                     label="Raza" :items="dataRaza" item-title="nombre_raza" item-value="id"
                                     :rules="[(v) => !!v || 'Campo requerido']" />
+                            </VCol>
+
+                            <VCol v-if="raza.length != 0">
+                                <h5>
+                                    Informacion de la raza
+                                </h5>
+                                <p class="p-0 m-0" style="font-size: 12px;">{{ dataRaza.filter(r => r.id ==
+                                    raza)[0]?.descripcion || ""
+                                    }}</p>
                             </VCol>
 
                         </VRow>

@@ -536,14 +536,14 @@ function eventMouseover() {
               <div class="text-center">
                 <span class="text-medium-emphasis">{{ moment(item.date).format('dddd, D') }} de
                   {{
-      moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
+                    moment(item.date).format('MMMM') }} de {{ moment(item.date).format('YYYY')
                   }}
                   <br> {{
-      moment(item.date).format('h:mm:ss a') }}</span>
+                    moment(item.date).format('h:mm:ss a') }}</span>
               </div>
             </template>
             <template #usuario="{ item }">
-              <span>a.castillo</span>
+              <span>{{ item.nombre_usuario }}</span>
             </template>
           </VDataTable>
           <VCardText class="d-flex flex-wrap justify-center gap-4">

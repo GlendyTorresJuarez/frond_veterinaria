@@ -76,8 +76,15 @@ const login = () => {
 
         userAbilities.push({ action: "read", subject: "Auth" });
 
+
+        if (usuario.rol == 'CLIENTE') {
+          userAbilities.push({ action: 'read', subject: 'Mascotas' })
+        }
+
         localStorage.setItem("userAbilities", JSON.stringify(userAbilities));
         ability.update(userAbilities);
+
+        console.log(userAbilities);
 
         router.replace({ path: "/" });
       }
@@ -173,9 +180,9 @@ onMounted(() => {
                 <VCol cols="12">
                   <VTextField prepend-inner-icon="tabler-brand-samsungpass" v-model="password" label="Contraseña"
                     :rules="[
-      (v) => !!v || 'El campo Contraseña es obligatorio',
-    ]" :type="isPasswordVisible ? 'text' : 'password'" :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-      " @click:append-inner="isPasswordVisible = !isPasswordVisible" />
+                      (v) => !!v || 'El campo Contraseña es obligatorio',
+                    ]" :type="isPasswordVisible ? 'text' : 'password'" :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
+                      " @click:append-inner="isPasswordVisible = !isPasswordVisible" />
 
                   <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
                     <VCheckbox v-model="rememberMe" label="Recordar contraseña" />
